@@ -1,0 +1,42 @@
+<mat-toolbar color="primary" class="toolbar mat-elevation-z4">
+  <span routerLink="/" style="cursor: pointer">Zoghori Matatu Booking</span>
+
+  <button
+    mat-button
+    aria-label="Login"
+    routerLink="/sign-in"
+    *ngIf="!isLoggedIn"
+  >
+    <mat-icon>login</mat-icon>
+    <span>Login</span>
+  </button>
+  <button
+    mat-button
+    color="accent"
+    aria-label="Login"
+    *ngIf="isLoggedIn"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>account_circle</mat-icon>
+    <span>{{ user?.name | titlecase }}</span>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>password</mat-icon> <span>Change Password</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon> <span>Logout</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<mat-toolbar color="primary" class="secondary-toolbar" *ngIf="!isMainPage">
+  <button mat-icon-button (click)="toggleSideNav()">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Zoghori login icon"
+      fontIcon="menu"
+    ></mat-icon>
+  </button>
+  <h1 class="headline-5">{{ title }}</h1>
+</mat-toolbar>
+<router-outlet></router-outlet>

@@ -1,0 +1,89 @@
+<div class="search-n-add">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. Mia"
+      #input
+    />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="navigateToAddVehicle()">
+    Add Vehicle
+  </button>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="plate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Number Plate
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.plate }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="capacity">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Capacity
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row"> {{ row.capacity }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fromLocation">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Departure From
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.fromLocation }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="toLocation">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Destination
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row"> {{ row.toLocation }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="travelDate">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Travel Date
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.travelDate | date }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <button
+          mat-icon-button
+          aria-label="Edit Vehicle"
+          (click)="navigateToEditVehicle(row.id)"
+        >
+          <mat-icon color="primary">edit_square</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          aria-label="Delete Vehicle"
+          (click)="deleteVehicle(row)"
+        >
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      matRipple
+      *matRowDef="let row; columns: displayedColumns"
+    ></mat-row>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page of users"
+  ></mat-paginator>
+</div>
