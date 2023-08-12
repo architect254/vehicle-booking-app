@@ -1,0 +1,110 @@
+<div class="search-n-add">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. Mia"
+      #input
+    />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="navigateToAddUser()">
+    <mat-icon>person_add</mat-icon>
+    Add User
+  </button>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="users" matSort>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Name
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Email
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row"> {{ row.email }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vehicleOwner">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Company
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.company.name }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Role
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.role }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="createdBy">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Created By
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.createdBy || "SYSTEM" }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedBy">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Last Updated By
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.updatedBy || "SYSTEM" }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedAt">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+        Last Updated
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        {{ row.dateUpdated | date }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell mat-header-cell *matHeaderCellDef mat-sort-header>
+      </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <button
+          mat-icon-button
+          aria-label="Edit User"
+          (click)="navigateToEditUser(row.id)"
+        >
+          <mat-icon color="primary">edit_square</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          aria-label="Delete User"
+          (click)="deleteUser(row)"
+        >
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      matRipple
+      *matRowDef="let row; columns: displayedColumns"
+    ></mat-row>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page of users"
+  ></mat-paginator>
+</div>

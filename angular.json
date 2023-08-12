@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vehicle-booking-app": {
+    "zoghori-matatu-booking": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/vehicle-booking-app",
+            "outputPath": "dist/zoghori-matatu-booking",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "vehicle-booking-app:build:production"
+              "browserTarget": "zoghori-matatu-booking:build:production"
             },
             "development": {
-              "browserTarget": "vehicle-booking-app:build:development"
+              "browserTarget": "zoghori-matatu-booking:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vehicle-booking-app:build"
+            "browserTarget": "zoghori-matatu-booking:build"
           }
         },
         "test": {

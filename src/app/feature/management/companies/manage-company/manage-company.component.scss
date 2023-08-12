@@ -1,0 +1,28 @@
+:host {
+  margin: 40px;
+  display: block;
+}
+mat-card {
+  width: 50%;
+}
+.add-company {
+}
+form > * {
+  width: 100%;
+}
+div[class="form-control"] {
+  width: 100%;
+}
+mat-form-field.mat-mdc-form-field {
+  width: 100%;
+}
+button.destination-btn {
+  width: initial;
+  float: right;
+  margin-bottom: 14px;
+}
+div.card-actions {
+  display: flex;
+  gap: 30px;
+  margin-left: auto;
+}

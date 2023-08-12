@@ -1,0 +1,10 @@
+form{
+    display: flex;
+    width: max-content;
+    margin: 70px auto;
+
+    button[type=submit]{
+        height: 55px;
+        width: 170px;
+    }
+}
