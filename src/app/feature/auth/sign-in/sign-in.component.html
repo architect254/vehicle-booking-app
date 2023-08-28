@@ -1,0 +1,55 @@
+<mat-toolbar>
+  <span>BookingApp</span>
+</mat-toolbar>
+<header><h1 class="mat-headline-5 text-center mt-3">Sign In To <strong>BookingApp</strong></h1></header>
+<section class="container">
+  <form class="mt-4" (ngSubmit)="submitForm()" [formGroup]="signInForm">
+    <mat-form-field appearance="outline" class="w-100 mt-3">
+      <mat-label>Username</mat-label>
+      <input
+        type="text"
+        formControlName="username"
+        matInput
+        placeholder="Ex. pat@example.com"
+      />
+      <mat-icon matPrefix class="material-icons-two-toned"
+        >account_circle</mat-icon
+      >
+
+      <mat-error *ngIf="username?.hasError('required')">
+        Username is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100 my-1">
+      <mat-label>Pin</mat-label>
+      <input
+        type="password"
+        formControlName="pin"
+        matInput
+        placeholder="Ex. 1234"
+      />
+      <mat-icon matPrefix class="material-icons-outlined">password</mat-icon>
+
+      <mat-error *ngIf="pin?.hasError('required')">
+        Pin is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      [disabled]="signInForm.invalid || isSubmitting"
+      type="submit"
+      color="accent"
+      class="w-100 my-1"
+    >
+      <mat-icon matSuffix *ngIf="!isSubmitting; else submitting"
+        >how_to_reg</mat-icon
+      >
+      <ng-template #submitting
+        ><mat-spinner diameter="30" strokeWidth="4" color="accent"></mat-spinner
+      ></ng-template>
+      <span *ngIf="!isSubmitting">Sign In</span>
+    </button>
+  </form>
+</section>

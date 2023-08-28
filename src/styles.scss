@@ -1,6 +1,7 @@
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -11,58 +12,34 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$zoghori-matatu-booking-primary: mat.define-palette(mat.$brown-palette, 800);
-$zoghori-matatu-booking-accent: mat.define-palette(
-  mat.$yellow-palette,
-  A200,
-  A100,
-  A400
-);
+$booking-app-primary: mat.define-palette(mat.$blue-palette);
+$booking-app-accent: mat.define-palette(mat.$grey-palette,A100);
 
 // The warn palette is optional (defaults to red).
-$zoghori-matatu-booking-warn: mat.define-palette(mat.$red-palette);
+$booking-app-warn: mat.define-palette(mat.$red-palette);
+
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$zoghori-matatu-booking-typography: mat.define-typography-config();
-$zoghori-matatu-booking-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $zoghori-matatu-booking-primary,
-      accent: $zoghori-matatu-booking-accent,
-      warn: $zoghori-matatu-booking-warn,
-    ),
-    typography: $zoghori-matatu-booking-typography,
+$booking-app-theme: mat.define-dark-theme((
+  color: (
+    primary: $booking-app-primary,
+    accent: $booking-app-accent,
+    warn: $booking-app-warn,
   )
-);
+));
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($zoghori-matatu-booking-theme);
-@include mat.typography-hierarchy($zoghori-matatu-booking-typography);
+@include mat.all-component-themes($booking-app-theme);
+
 /* You can add global styles to this file, and also import other style files */
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
 
-.nav-active {
-  color: mat.get-color-from-palette($zoghori-matatu-booking-primary) !important;
-  background: mat.get-color-from-palette(
-    $zoghori-matatu-booking-primary,
-    "default",
-    0.3
-  ) !important;
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
 
-  &:hover {
-    background: mat.get-color-from-palette(
-      $zoghori-matatu-booking-primary,
-      "default",
-      0.4
-    ) !important;
-  }
-}
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
