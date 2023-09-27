@@ -4,7 +4,7 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Filter By</mat-toolbar>
-    <mat-nav-list>
+    <mat-nav-list class="query-list">
       <mat-accordion>
         <mat-expansion-panel expanded="true" (opened)="panelOpenState = true"
                              (closed)="panelOpenState = false">

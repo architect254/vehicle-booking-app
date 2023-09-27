@@ -17,18 +17,18 @@ export class EntityDashboardComponent {
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
+          { title: 'Vehicle 1', cols: 1, rows: 1 },
+          { title: 'Vehicle 2', cols: 1, rows: 1 },
+          { title: 'Vehicle 3', cols: 1, rows: 1 },
+          { title: 'Vehicle 4', cols: 1, rows: 1 }
         ];
       }
 
       return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
+        { title: 'Vehicle 1', cols: 2, rows: 1 },
+        { title: 'Vehicle 2', cols: 1, rows: 1 },
+        { title: 'Vehicle 3', cols: 1, rows: 2 },
+        { title: 'Vehicle 4', cols: 1, rows: 1 }
       ];
     })
   );

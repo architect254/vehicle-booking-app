@@ -19,6 +19,7 @@ import { EntityDashboardComponent } from './booking/booking-grid/entity-dashboar
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 
@@ -44,7 +45,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatAutocompleteModule,
     MatGridListModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
   ]
 })
 export class HomeModule { }
