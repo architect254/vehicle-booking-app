@@ -6,80 +6,47 @@
     <mat-toolbar>Filter By</mat-toolbar>
     <mat-nav-list>
       <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true"
+        <mat-expansion-panel expanded="true" (opened)="panelOpenState = true"
                              (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Type
+              Vehicle Type
             </mat-panel-title>
             <mat-panel-description>
-              Good Types
+              Cab, Matatu, Bus
             </mat-panel-description>
           </mat-expansion-panel-header>
           
           
           <mat-selection-list>
-            <div mat-subheader>Vehicle Type</div>
             <mat-list-option *ngFor="let folder of folders">
               <mat-icon matListItemIcon>directions_bus</mat-icon>
               <div matListItemTitle>{{folder.name}}</div>
               <div matListItemLine>{{folder.updated | date}}</div>
             </mat-list-option>
-            <mat-divider></mat-divider>
-            <div mat-subheader>Travel Time</div>
+          </mat-selection-list>
+          
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Travel Time
+            </mat-panel-title>
+            <mat-panel-description>
+              Day, Night
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          
+          
+          <mat-selection-list>
             <mat-list-option *ngFor="let note of notes">
               <mat-icon matListItemIcon>update</mat-icon>
               <div matListItemTitle>{{note.name}}</div>
               <div matListItemLine>{{note.updated | date}}</div>
             </mat-list-option>
           </mat-selection-list>
-          
-        </mat-expansion-panel>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                             (closed)="panelOpenState = false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Routes
-            </mat-panel-title>
-            <mat-panel-description>
-              Routes Good
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          
-          
-            <form class="example-form">
-                <mat-form-field class="example-full-width">
-                  <mat-label>Depart From</mat-label>
-                  <input type="text"
-                         placeholder="Pick one"
-                         aria-label="Number"
-                         matInput
-                         [formControl]="myControl"
-                         [matAutocomplete]="auto">
-                  <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                      {{option}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </form>
-            <mat-divider></mat-divider>
-            <form class="example-form">
-              <mat-form-field class="example-full-width">
-                <mat-label>Destination</mat-label>
-                <input type="text"
-                       placeholder="Pick one"
-                       aria-label="Number"
-                       matInput
-                       [formControl]="myControl"
-                       [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </form>
           
         </mat-expansion-panel>
 
@@ -96,8 +63,9 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Vehicle Booking Section</span>
+      <span>Booking App</span>
     </mat-toolbar>
     <!-- Add Content Here -->
+    <app-booking-grid></app-booking-grid>
   </mat-sidenav-content>
 </mat-sidenav-container>
