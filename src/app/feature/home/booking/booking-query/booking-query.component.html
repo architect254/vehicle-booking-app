@@ -1,0 +1,103 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Filter By</mat-toolbar>
+    <mat-nav-list>
+      <mat-accordion>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Type
+            </mat-panel-title>
+            <mat-panel-description>
+              Good Types
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          
+          
+          <mat-selection-list>
+            <div mat-subheader>Vehicle Type</div>
+            <mat-list-option *ngFor="let folder of folders">
+              <mat-icon matListItemIcon>directions_bus</mat-icon>
+              <div matListItemTitle>{{folder.name}}</div>
+              <div matListItemLine>{{folder.updated | date}}</div>
+            </mat-list-option>
+            <mat-divider></mat-divider>
+            <div mat-subheader>Travel Time</div>
+            <mat-list-option *ngFor="let note of notes">
+              <mat-icon matListItemIcon>update</mat-icon>
+              <div matListItemTitle>{{note.name}}</div>
+              <div matListItemLine>{{note.updated | date}}</div>
+            </mat-list-option>
+          </mat-selection-list>
+          
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Routes
+            </mat-panel-title>
+            <mat-panel-description>
+              Routes Good
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          
+          
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Depart From</mat-label>
+                  <input type="text"
+                         placeholder="Pick one"
+                         aria-label="Number"
+                         matInput
+                         [formControl]="myControl"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+            <mat-divider></mat-divider>
+            <form class="example-form">
+              <mat-form-field class="example-full-width">
+                <mat-label>Destination</mat-label>
+                <input type="text"
+                       placeholder="Pick one"
+                       aria-label="Number"
+                       matInput
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+          
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Vehicle Booking Section</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
