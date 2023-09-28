@@ -14,6 +14,12 @@ import { MatListModule } from '@angular/material/list';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { BookingGridComponent } from './booking/booking-grid/booking-grid.component';
+import { EntityDashboardComponent } from './booking/booking-grid/entity-dashboard/entity-dashboard.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 
@@ -21,7 +27,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   declarations: [
     HomeComponent,
     BookingComponent,
-    BookingQueryComponent
+    BookingQueryComponent,
+    BookingGridComponent,
+    EntityDashboardComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +42,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatIconModule,
     MatListModule,
     MatExpansionModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
+    MatProgressBarModule
   ]
 })
 export class HomeModule { }
