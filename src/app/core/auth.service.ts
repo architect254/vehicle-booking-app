@@ -10,10 +10,13 @@ import jwt_decode from 'jwt-decode';
 
 import { environment } from '../../environments/environment';
 import { JwtPayload } from '../misc/models/jwt.payload';
-import { AuthhDto } from '../misc/models/auth.dto';
+import { AuthDto } from '../misc/models/auth.dto';
+import { User } from '../misc/models/user.model';
+import { STORAGE_KEYS } from '../misc/models/storage-keys.enum';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  user!: User;
   private currentTokenSubject: BehaviorSubject<any> = new BehaviorSubject(
     localStorage.getItem(`accessToken`)
   );
@@ -39,25 +42,25 @@ export class AuthService {
     );
   }
 
-  signUp(credentials: AuthhDto) {
+  signUp(credentials: AuthDto) {
     return this._http.post<unknown>(
-      `${environment.apiUrl}/sign-up`,
+      `${environment.apiUrl}/auth/sign-up`,
       credentials,
       { observe: 'response' }
     );
   }
 
-  signIn({ username, pin }: AuthhDto) {
+  signIn({ phoneNo, password }: AuthDto) {
     return this._http
-      .post<any>(`${environment.apiUrl}/sign-in`, {
-        username,
-        pin,
+      .post<any>(`${environment.apiUrl}/auth/sign-in`, {
+        phoneNo,
+        password,
       })
       .pipe(
         tap({
-          next: ({ accessToken }) => {
-            this.currentTokenSubject.next(accessToken);
-            localStorage.setItem('accessToken', accessToken);
+          next: ({ token }) => {
+            this.currentTokenSubject.next(token);
+            localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token)
           },
         })
       );
@@ -67,7 +70,6 @@ export class AuthService {
     return this.currentToken$.pipe(
       map((token) => {
         const isAuthenticated = !this.jwtHelper.isTokenExpired(token);
-        console.log(`isAuth`, isAuthenticated);
 
         return isAuthenticated;
       })

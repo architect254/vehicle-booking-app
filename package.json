@@ -4,7 +4,7 @@
   "author": "Jared Bada",
   "license": "Apache-2.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "node --max_old_space_size=4096 ./node_modules/.bin/ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

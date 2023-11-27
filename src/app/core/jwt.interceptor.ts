@@ -14,6 +14,9 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
+  private readonly whiteListedUrls = [
+    `sign-up`, `sign-in`
+  ]
   constructor(private authenticationService: AuthService) {}
 
   intercept(
@@ -21,14 +24,14 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // add auth header with jwt if user is logged in and request is to api url
-    let token = null;
+    let jwtToken = null;
     return this.authenticationService.currentToken$.pipe(
       switchMap((token) => {
-        token = token;
-        console.log(`intercepting`, token);
+        jwtToken = token;
+        console.log(`intercepting`, jwtToken);
         const isApiUrl = request.url.startsWith(environment.apiUrl);
 
-        if (token && isApiUrl) {
+        if (jwtToken && !this.whiteListedUrls.includes(request.url)) {
           console.log(`intercepting`, token, isApiUrl);
           request = request.clone({
             setHeaders: {

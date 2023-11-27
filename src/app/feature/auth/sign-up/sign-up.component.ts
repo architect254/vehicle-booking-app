@@ -10,10 +10,11 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription, concatMap, throwError } from 'rxjs';
+import { Subscription, catchError, concatMap, of, throwError } from 'rxjs';
 
 import { AuthService } from 'src/app/core/auth.service';
 import { UserRole } from 'src/app/misc/models/user-role.enum';
+import { User } from 'src/app/misc/models/user.model';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,19 +22,17 @@ import { UserRole } from 'src/app/misc/models/user-role.enum';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit, OnDestroy {
-  signUpForm: FormGroup = this.fb.group(
-    {
-      username: [``, Validators.required],
-      pin: [``, Validators.required],
-      confirmPin: [``, Validators.required],
-    },
-  );
+  signUpForm: FormGroup = this.fb.group({
+    phoneNo: [``, Validators.required],
+    password: [``, Validators.required],
+    confirmPassword: [``, Validators.required],
+  });
 
   isSubmitting = false;
 
   isSigningIn = false;
 
-  pinMismatch: boolean = false;
+  passwordMismatch: boolean = false;
 
   $subscriptions: Subscription = new Subscription();
   constructor(
@@ -42,33 +41,35 @@ export class SignUpComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar,
     private router: Router
   ) {
-    this.signUpForm.setValidators(this.pinMatch)
+    this.signUpForm.setValidators(this.passwordMisMatch);
     this.signUpForm.updateValueAndValidity();
   }
 
-  get username() {
-    return this.signUpForm.get(`username`);
+  get phoneNo() {
+    return this.signUpForm.get(`phoneNo`);
   }
-  get pin() {
-    return this.signUpForm.get(`pin`);
+  get password() {
+    return this.signUpForm.get(`password`);
   }
-  get confirmPin() {
-    return this.signUpForm.get(`confirmPin`);
+  get confirmPassword() {
+    return this.signUpForm.get(`confirmPassword`);
   }
 
   ngOnInit(): void {}
 
-  pinMatch() {
+  passwordMisMatch() {
     return (form: FormGroup) => {
-      debugger
-      const pin = form.get(`pin`);
-      const confirmPin = form.get(`confirmPin`);
+      const password = form.get(`password`);
+      const confirmPassword = form.get(`confirmPassword`);
 
-      if (confirmPin?.errors && !confirmPin.errors[`pinMatch`]) {
+      if (
+        confirmPassword?.errors &&
+        !confirmPassword.errors[`passwordMismatch`]
+      ) {
         return;
       }
 
-      if (pin?.value !== confirmPin?.value) {
+      if (password?.value !== confirmPassword?.value) {
         form.setErrors({ pinMatch: true });
       } else {
         form?.setErrors(null);
@@ -82,27 +83,41 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
     this.$subscriptions.add(
       this.authService
-        .signUp({ ...this.signUpForm.getRawValue(), role: UserRole.LENDER })
+        .signUp({ ...this.signUpForm.getRawValue(), role: UserRole.ADMIN })
         .pipe(
-          concatMap(({ status }: HttpResponse<unknown>, i: number) => {
+          concatMap((value: HttpResponse<any>) => {
             this.isSubmitting = false;
-            if (status == 201) {
-              this.isSigningIn = true;
-              return this.authService.signIn(this.signUpForm.getRawValue());
+            this.isSigningIn = true;
+            return this.authService.signIn({
+              ...this.signUpForm.getRawValue(),
+            });
+          }),
+          catchError((error: Error) => {
+            this.isSubmitting = false;
+            this.isSigningIn = true;
+            this.signUpForm.enable();
+            if (error instanceof HttpErrorResponse) {
+              console.log(`dksjkdnjks`, error)
+              return of(new Error((error as any).title));
+            } else {
+              return of(
+                new Error(`Something Went Wrong. Please try again later..`)
+              );
             }
-            return throwError(
-              () => new Error(`Something went wrong! Please try again later`)
-            );
           })
         )
         .subscribe(
-          () => {
-            this.router.navigate([`/`]);
+          (user: User) => {
+            this.isSubmitting = false;
+            this.isSigningIn = false;
+            this.authService.user = user;
           },
-          ({ error }: HttpErrorResponse) => {
+          (err) => {
+            this.isSubmitting = false;
             this.isSigningIn = false;
             this.signUpForm.enable();
-            this._snackBar.open(`${error.message}`, undefined, {
+
+            this._snackBar.open(err.message, undefined, {
               panelClass: `warn`,
             });
           }
