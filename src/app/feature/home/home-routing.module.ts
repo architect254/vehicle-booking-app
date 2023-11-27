@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { BookingComponent } from './booking/booking.component';
+import { AdminComponent } from '../admin/admin.component';
 
 const routes: Routes = [
-  {path:'book', component:BookingComponent},
-  {path:'', redirectTo:'book', pathMatch:'full'}
+  {path:'admin', component:AdminComponent},
+  {path:'', redirectTo:'admin', pathMatch:'full'}
 ];
 
 @NgModule({
