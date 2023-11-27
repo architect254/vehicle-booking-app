@@ -1,7 +1,10 @@
+import { UserRole } from "./user-role.enum";
+
 export class User {
   constructor(
-    public name: string,
-    public email: string,
-    public password: string
+    public firstname: string,
+    public surname: string,
+    public phoneNo: string,
+    public role: UserRole
   ) {}
 }

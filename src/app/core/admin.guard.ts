@@ -12,11 +12,12 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
+import { UserRole } from '../misc/models/user-role.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -50,7 +51,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(url: string): boolean | Observable<UrlTree> {
-    if (this.authService.isAuthenticated()) {
+    if (this.authService.isAuthenticated() && this.authService.user?.role == UserRole.ADMIN) {
       return true;
     }
 
