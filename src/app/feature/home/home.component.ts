@@ -1,16 +1,23 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  menu = menu;
+
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+
   private breakpointObserver = inject(BreakpointObserver);
   panelOpenState = false;
+  isMobile = false;
+  isCollapsed = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -19,52 +26,64 @@ export class HomeComponent {
       shareReplay()
     );
 
-  folders: Section[] = [
-    {
-      name: 'Cab',
-      updated: new Date('1/1/16'),
-    },
-    {
-      name: 'Matatu',
-      updated: new Date('1/17/16'),
-    },
-    {
-      name: 'Bus',
-      updated: new Date('1/28/16'),
-    },
-  ];
-  notes: Section[] = [
-    {
-      name: 'Night',
-      updated: new Date('2/20/16'),
-    },
-    {
-      name: 'Day',
-      updated: new Date('1/18/16'),
-    },
-  ];
-
-  myControl = new FormControl('');
-  options: string[] = ['Mombasa', 'Nairobi', 'Kisumu'];
-  filteredOptions!: Observable<string[]>;
-
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || ''))
-    );
+  ngOnInit(): void {
+    this.isHandset$.subscribe((isHandset) => {
+      this.isMobile = isHandset;
+    });
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
+  toggleMenu() {
+    if (this.isMobile) {
+      this.sidenav.toggle();
+      this.isCollapsed = false; // On mobile, the menu can never be collapsed
+    } else {
+      this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
+      this.isCollapsed = !this.isCollapsed;
+    }
   }
 }
 
-interface Section {
+interface MenuItem {
   name: string;
-  updated: Date;
+  path: string;
+  order: number;
+  icon: string;
+  isActive: boolean;
 }
+const menu: MenuItem[] = [
+  {
+    name: `users`,
+    path: `users`,
+    order: 1,
+    icon: `group`,
+    isActive: false,
+  },
+  {
+    name: `companies`,
+    path: `companies`,
+    order: 2,
+    icon:`diversity_3`,
+    isActive: false,
+  },
+  {
+    name: `vehicles`,
+    path: `vehicles`,
+    order: 3,
+    icon: `airport_shuttle`,
+    isActive: false,
+  },
+  {
+    name: `bookings`,
+    path: `bookings`,
+    order: 5,
+    icon: `hotel_class`,
+    isActive: false,
+  },
+  {
+    name: `destinations`,
+    path: `destinations`,
+    order: 4,
+    icon: `map`,
+    isActive: false,
+  },
+];

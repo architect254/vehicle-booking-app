@@ -1,72 +1,75 @@
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer class="sidenav" fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false">
-      <mat-toolbar>Filter By</mat-toolbar>
-      <mat-nav-list class="query-list">
-        <mat-accordion>
-          <mat-expansion-panel expanded="true" (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Vehicle Type
-              </mat-panel-title>
-              <mat-panel-description>
-                Cab, Matatu, Bus
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            
-            
-            <mat-selection-list>
-              <mat-list-option *ngFor="let folder of folders">
-                <mat-icon matListItemIcon>directions_bus</mat-icon>
-                <div matListItemTitle>{{folder.name}}</div>
-                <div matListItemLine>{{folder.updated | date}}</div>
-              </mat-list-option>
-            </mat-selection-list>
-            
-          </mat-expansion-panel>
-  
-          <mat-expansion-panel (opened)="panelOpenState = true"
-                               (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Travel Time
-              </mat-panel-title>
-              <mat-panel-description>
-                Day, Night
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            
-            
-            <mat-selection-list>
-              <mat-list-option *ngFor="let note of notes">
-                <mat-icon matListItemIcon>update</mat-icon>
-                <div matListItemTitle>{{note.name}}</div>
-                <div matListItemLine>{{note.updated | date}}</div>
-              </mat-list-option>
-            </mat-selection-list>
-            
-          </mat-expansion-panel>
-  
-        </mat-accordion>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <mat-toolbar color="primary">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    [ngClass]="!(isHandset$ | async) ? 'expanded' : ''"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-nav-list>
+      <div class="profile-card">
+        <div class="header">
+          <p class="mat-subtitle-1">Jared Bada</p>
+          <small class="mat-body-1">jbada@gmail.com</small>
+        </div>
+        <img src="../../../assets/icons/profile.svg" alt="profile" />
+      </div>
+    </mat-nav-list>
+    <mat-divider> </mat-divider>
+
+    <h2 matSubheader>Tools</h2>
+    <mat-nav-list>
+      <a
+        *ngFor="let menuItem of menu"
+        mat-list-item
+        [routerLink]="menuItem.path"
+      >
+        <span class="nav-link-container">
+          <mat-icon class="nav-icon">{{ menuItem.icon }}</mat-icon>
+          <span class="nav-text">{{ menuItem.name }}</span>
+        </span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="primary-toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="toggleMenu()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+     
+        <span>Vehicle Booking Application</span>
+        <span class="toolbar-spacer"></span>
         <button
-          type="button"
-          aria-label="Toggle sidenav"
           mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          [matMenuTriggerFor]="userProfileUtilsMenu"
+          aria-label="User Profile Menu" class="profile-utils-menu"
+        >
+          <img src="../../../assets/icons/profile.svg" alt="profile" class="utils-profile-pic"/>
         </button>
-        <span>Booking App</span>
-      </mat-toolbar>
-      <!-- Add Content Here -->
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-  
+        <mat-menu #userProfileUtilsMenu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>lock_reset</mat-icon>
+            <span>Change Password</span>
+          </button>
+          <button mat-menu-item disabled>
+            <mat-icon>manage_accounts</mat-icon>
+            <span>My Profile Settings</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Log Out</span>
+          </button>
+        </mat-menu>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

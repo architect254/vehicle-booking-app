@@ -15,8 +15,8 @@ import { AuthService } from 'src/app/core/auth.service';
 })
 export class SignInComponent implements OnDestroy {
   signInForm: FormGroup = this.fb.group({
-    username: [``, Validators.required],
-    pin: [``, Validators.required],
+    phoneNo: [``, Validators.required],
+    password: [``, Validators.required],
   });
   isSubmitting = false;
 
@@ -28,11 +28,11 @@ export class SignInComponent implements OnDestroy {
     private router: Router
   ) {}
 
-  get username() {
-    return this.signInForm.get(`username`);
+  get phoneNo() {
+    return this.signInForm.get(`phoneNo`);
   }
-  get pin() {
-    return this.signInForm.get(`pin`);
+  get password() {
+    return this.signInForm.get(`password`);
   }
 
   submitForm() {

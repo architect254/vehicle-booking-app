@@ -2,37 +2,37 @@
   <span>BookingApp</span>
 </mat-toolbar>
 <header><h1 class="mat-headline-5 text-center mt-3">Sign In To <strong>BookingApp</strong></h1></header>
-<section class="container">
+<section class="form-container">
   <form class="mt-4" (ngSubmit)="submitForm()" [formGroup]="signInForm">
     <mat-form-field appearance="outline" class="w-100 mt-3">
-      <mat-label>Username</mat-label>
+      <mat-label>Phone Number</mat-label>
       <input
         type="text"
-        formControlName="username"
+        formControlName="phoneNO"
         matInput
-        placeholder="Ex. pat@example.com"
+        placeholder="Ex. 07 123 123 12"
       />
       <mat-icon matPrefix class="material-icons-two-toned"
         >account_circle</mat-icon
       >
 
-      <mat-error *ngIf="username?.hasError('required')">
-        Username is <strong>required</strong>
+      <mat-error *ngIf="phoneNo?.hasError('required')">
+        Phone Number is <strong>required</strong>
       </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100 my-1">
-      <mat-label>Pin</mat-label>
+      <mat-label>Password</mat-label>
       <input
         type="password"
-        formControlName="pin"
+        formControlName="password"
         matInput
-        placeholder="Ex. 1234"
+        placeholder="Ex. #123&AbC"
       />
       <mat-icon matPrefix class="material-icons-outlined">password</mat-icon>
 
-      <mat-error *ngIf="pin?.hasError('required')">
-        Pin is <strong>required</strong>
+      <mat-error *ngIf="password?.hasError('required')">
+        Password is <strong>required</strong>
       </mat-error>
     </mat-form-field>
 
