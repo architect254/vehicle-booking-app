@@ -4,7 +4,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, throwError, pipe } from 'rxjs';
 
 import { AuthService } from 'src/app/core/auth.service';
 
@@ -39,19 +39,34 @@ export class SignInComponent implements OnDestroy {
     this.isSubmitting = true;
     this.signInForm.disable();
     this.$subscriptions.add(
-      this.authService.signIn(this.signInForm.getRawValue()).subscribe(
-        () => {
-          this.isSubmitting = false;
-          this.router.navigate([`/`]);
-        },
-        ({ error }: HttpErrorResponse) => {
-          this.isSubmitting = false;
-          this.signInForm.enable();
-          this._snackBar.open(`${error.message}`, undefined, {
-            panelClass: `warn`,
-          });
-        }
-      )
+      this.authService
+        .signIn(this.signInForm.getRawValue())
+        .pipe(
+          catchError((error: Error) => {
+            if (error instanceof HttpErrorResponse) {
+              return throwError(
+                new Error(`Invalid Input. Check then try again..`)
+              );
+            } else {
+              return throwError(
+                new Error(`Something Went Wrong. Please try again later..`)
+              );
+            }
+          })
+        )
+        .subscribe(
+          () => {
+            this.isSubmitting = false;
+            this.router.navigate([`/`]);
+          },
+          ({ error }: HttpErrorResponse) => {
+            this.isSubmitting = false;
+            this.signInForm.enable();
+            this._snackBar.open(`${error.message}`, undefined, {
+              panelClass: `warn`,
+            });
+          }
+        )
     );
   }
 
