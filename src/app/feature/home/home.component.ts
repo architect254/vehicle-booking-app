@@ -2,6 +2,18 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { AuthService } from 'src/app/core/auth.service';
+import { User } from 'src/app/misc/models/user.model';
+import { PasswordResetDialogComponent } from './password-reset-dialog/password-reset-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +22,7 @@ import { Observable, map, shareReplay, startWith } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
   menu = menu;
+  user!: User;
 
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
@@ -26,9 +39,14 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
+  constructor(private dialog: MatDialog, private authService: AuthService) {}
   ngOnInit(): void {
     this.isHandset$.subscribe((isHandset) => {
       this.isMobile = isHandset;
+    });
+
+    this.authService.currentTokenUserValue$.subscribe((user: User) => {
+      this.user = user;
     });
   }
 
@@ -40,6 +58,17 @@ export class HomeComponent implements OnInit {
       this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
       this.isCollapsed = !this.isCollapsed;
     }
+  }
+
+  resetPassword() {
+    const dialogRef = this.dialog.open(PasswordResetDialogComponent, {
+      data: this.user,
+    });
+
+    dialogRef.afterClosed().subscribe((payload: {password:string, newPassword:string}) => {
+      this.authService.resetPassword(payload).subscribe(()=>{
+      });
+    });
   }
 }
 
@@ -62,7 +91,7 @@ const menu: MenuItem[] = [
     name: `companies`,
     path: `companies`,
     order: 2,
-    icon:`diversity_3`,
+    icon: `diversity_3`,
     isActive: false,
   },
   {

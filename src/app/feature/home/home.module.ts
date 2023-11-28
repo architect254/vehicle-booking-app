@@ -16,9 +16,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HomeComponent } from './home.component';
+import { PasswordResetDialogComponent } from './password-reset-dialog/password-reset-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, PasswordResetDialogComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -38,6 +40,7 @@ import { HomeComponent } from './home.component';
     MatButtonModule,
     MatMenuModule,
     MatIconModule,
+    MatProgressSpinnerModule
   ],
 })
 export class HomeModule {}

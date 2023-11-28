@@ -4,7 +4,7 @@ import { AuthGuard } from './core/auth.guard';
 
 const routes: Routes = [
   {path:'auth', loadChildren:()=> import('./feature/auth/auth.module').then(m => m.AuthModule)},
-  {path:'', loadChildren:()=> import('./feature/home/home.module').then(m => m.HomeModule), canActivate: [AuthGuard]},
+  {path:'', loadChildren:()=> import('./feature/home/home.module').then(m => m.HomeModule), canLoad: [AuthGuard]},
 ];
 
 @NgModule({

@@ -82,4 +82,8 @@ export class AuthService {
     this.currentTokenSubject.next(null);
     this._router.navigate(['../sign-in'], { relativeTo: this._route });
   }
+
+  resetPassword(payload:any){
+    return this._http.post<any>(`${environment.apiUrl}/auth/reset-password`,payload);
+  }
 }
