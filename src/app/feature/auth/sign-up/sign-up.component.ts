@@ -89,16 +89,20 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
     this.signUpForm.disable();
 
+    const signUpPayload = {...this.signUpForm.getRawValue(),  role: UserRole.ADMIN };
+    delete signUpPayload.confirmPassword;
+
     this.$subscriptions.add(
       this.authService
-        .signUp({ ...this.signUpForm.getRawValue(), role: UserRole.ADMIN })
+        .signUp(signUpPayload)
         .pipe(
           concatMap((value: HttpResponse<any>) => {
             this.isSubmitting = false;
             this.isSigningIn = true;
-            return this.authService.signIn({
-              ...this.signUpForm.getRawValue(),
-            });
+            const signInPayload = {...this.signUpForm.getRawValue(), password: this.signUpForm.getRawValue().confirmPassword};
+            delete signInPayload.confirmPassword;
+            delete signInPayload.role;
+            return this.authService.signIn(signInPayload);
           }),
           catchError((error: Error) => {
             this.isSubmitting = false;

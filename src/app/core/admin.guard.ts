@@ -51,7 +51,6 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(url: string): boolean | Observable<UrlTree> {
-    return true;
     if (this.authService.isAuthenticated() && this.authService.user?.role == UserRole.ADMIN) {
       return true;
     }
