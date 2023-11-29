@@ -2,7 +2,7 @@
   <span>BookingApp</span>
 </mat-toolbar>
 <header>
-  <h1 class="mat-headline-5 text-center mt-3" *ngIf="!isSigningIn">
+  <h1 class="mat-headline-5 text-center " *ngIf="!isSigningIn">
     Sign Up For <strong>BookingApp</strong>
   </h1>
 </header>
@@ -12,7 +12,43 @@
 -->
 <section class="form-container mat-typography" *ngIf="!isSigningIn">
   <form class="mt-4" (ngSubmit)="submitForm()" [formGroup]="signUpForm">
-    <mat-form-field appearance="outline" class="w-100 mt-3">
+    <section class="user-name">
+      <mat-form-field appearance="outline" class="w-100 ">
+        <mat-label>Firstname</mat-label>
+        <input
+          type="text"
+          name="firstname"
+          formControlName="firstname"
+          matInput
+          placeholder="Ex. John"
+        />
+        <mat-icon matPrefix class="material-icons-two-toned"
+          >contacts</mat-icon
+        >
+        <mat-error *ngIf="firstname?.hasError('required')">
+          First Name is required
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="w-100 ">
+        <mat-label>Surname</mat-label>
+        <input
+          type="text"
+          name="surname"
+          formControlName="surname"
+          matInput
+          placeholder="Ex. Doe"
+        />
+        <mat-icon matPrefix class="material-icons-two-toned"
+          >contacts</mat-icon
+        >
+        <mat-error *ngIf="surname?.hasError('required')">
+          Surname is required
+        </mat-error>
+      </mat-form-field>
+    </section>
+
+    <mat-form-field appearance="outline" class="w-100 ">
       <mat-label>Phone Number</mat-label>
       <input
         type="phone"
@@ -22,7 +58,7 @@
         placeholder="Ex. 0712312312"
       />
       <mat-icon matPrefix class="material-icons-two-toned"
-        >account_circle</mat-icon
+        >phone</mat-icon
       >
       <mat-error *ngIf="phoneNo?.hasError('required')">
         Phone Number is required
@@ -74,7 +110,7 @@
     </button>
     <small
       >Already have an account?
-      <a class="icon-link text-primary" routerLink="../SignIn"
+      <a class="icon-link text-primary" routerLink="../sign-in"
         >Sign in <i class="bi bi-box-arrow-in-right"></i></a
       ></small
     >
@@ -92,5 +128,5 @@
   <section class="loader">
     <mat-spinner color="accent"></mat-spinner>
   </section>
-  <header class="mat-small text-center mt-3">Signing In</header>
+  <header class="mat-small text-center ">Signing In</header>
 </section>

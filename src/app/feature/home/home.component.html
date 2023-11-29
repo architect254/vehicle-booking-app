@@ -19,7 +19,7 @@
     </mat-nav-list>
     <mat-divider> </mat-divider>
 
-    <h2 matSubheader>Tools</h2>
+    <h2 matSubheader class="sub-header">Modules</h2>
     <mat-nav-list>
       <a
         *ngFor="let menuItem of menu"
@@ -55,11 +55,11 @@
           <img src="../../../assets/icons/profile.svg" alt="profile" class="utils-profile-pic"/>
         </button>
         <mat-menu #userProfileUtilsMenu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="resetPassword()">
             <mat-icon>lock_reset</mat-icon>
             <span>Change Password</span>
           </button>
-          <button mat-menu-item disabled>
+          <button mat-menu-item>
             <mat-icon>manage_accounts</mat-icon>
             <span>My Profile Settings</span>
           </button>

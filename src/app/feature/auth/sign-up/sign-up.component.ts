@@ -23,6 +23,8 @@ import { User } from 'src/app/misc/models/user.model';
 })
 export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup = this.fb.group({
+    firstname: [``, Validators.required],
+    surname: [``, Validators.required],
     phoneNo: [``, Validators.required],
     password: [``, Validators.required],
     confirmPassword: [``, Validators.required],
@@ -45,6 +47,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.signUpForm.updateValueAndValidity();
   }
 
+  get firstname() {
+    return this.signUpForm.get(`firstname`);
+  }
+  get surname() {
+    return this.signUpForm.get(`surname`);
+  }
   get phoneNo() {
     return this.signUpForm.get(`phoneNo`);
   }
@@ -81,28 +89,29 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
     this.signUpForm.disable();
 
+    const signUpPayload = {...this.signUpForm.getRawValue(),  role: UserRole.ADMIN };
+    delete signUpPayload.confirmPassword;
+
     this.$subscriptions.add(
       this.authService
-        .signUp({ ...this.signUpForm.getRawValue(), role: UserRole.ADMIN })
+        .signUp(signUpPayload)
         .pipe(
           concatMap((value: HttpResponse<any>) => {
             this.isSubmitting = false;
             this.isSigningIn = true;
-            return this.authService.signIn({
-              ...this.signUpForm.getRawValue(),
-            });
+            const signInPayload = {...this.signUpForm.getRawValue(), password: this.signUpForm.getRawValue().confirmPassword};
+            delete signInPayload.confirmPassword;
+            delete signInPayload.role;
+            return this.authService.signIn(signInPayload);
           }),
           catchError((error: Error) => {
             this.isSubmitting = false;
             this.isSigningIn = true;
             this.signUpForm.enable();
             if (error instanceof HttpErrorResponse) {
-              console.log(`dksjkdnjks`, error)
-              return of(new Error((error as any).title));
+              return throwError(new Error(`Invalid Input. Check then try again..`));
             } else {
-              return of(
-                new Error(`Something Went Wrong. Please try again later..`)
-              );
+              return throwError(new Error(`Something Went Wrong. Please try again later..`));
             }
           })
         )
@@ -111,6 +120,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
             this.isSubmitting = false;
             this.isSigningIn = false;
             this.authService.user = user;
+
           },
           (err) => {
             this.isSubmitting = false;
