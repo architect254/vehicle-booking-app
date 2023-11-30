@@ -31,19 +31,19 @@
       </mat-form-field>
   
       <mat-form-field appearance="outline" class="w-100 ">
-        <mat-label>Surname</mat-label>
+        <mat-label>Lastname</mat-label>
         <input
           type="text"
-          name="surname"
-          formControlName="surname"
+          name="lastname"
+          formControlName="lastname"
           matInput
           placeholder="Ex. Doe"
         />
         <mat-icon matPrefix class="material-icons-two-toned"
           >contacts</mat-icon
         >
-        <mat-error *ngIf="surname?.hasError('required')">
-          Surname is required
+        <mat-error *ngIf="lastname?.hasError('required')">
+          Lastname is required
         </mat-error>
       </mat-form-field>
     </section>
@@ -52,8 +52,8 @@
       <mat-label>Phone Number</mat-label>
       <input
         type="phone"
-        name="phoneNo"
-        formControlName="phoneNo"
+        name="phone_number"
+        formControlName="phone_number"
         matInput
         placeholder="Ex. 0712312312"
       />

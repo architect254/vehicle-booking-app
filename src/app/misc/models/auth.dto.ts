@@ -2,7 +2,7 @@ import { UserRole } from "./user-role.enum";
 
 export interface AuthDto{
     firstname:string;
-    surname:string;
-    phoneNo:number;
+    lastname:string;
+    phone_number:number;
     password:string;
 }

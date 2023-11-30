@@ -24,8 +24,8 @@ import { User } from 'src/app/misc/models/user.model';
 export class SignUpComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup = this.fb.group({
     firstname: [``, Validators.required],
-    surname: [``, Validators.required],
-    phoneNo: [``, Validators.required],
+    lastname: [``, Validators.required],
+    phone_number: [``, Validators.required],
     password: [``, Validators.required],
     confirmPassword: [``, Validators.required],
   });
@@ -50,11 +50,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   get firstname() {
     return this.signUpForm.get(`firstname`);
   }
-  get surname() {
-    return this.signUpForm.get(`surname`);
+  get lastname() {
+    return this.signUpForm.get(`lastname`);
   }
   get phoneNo() {
-    return this.signUpForm.get(`phoneNo`);
+    return this.signUpForm.get(`phone_number`);
   }
   get password() {
     return this.signUpForm.get(`password`);
@@ -96,7 +96,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       this.authService
         .signUp(signUpPayload)
         .pipe(
-          concatMap((value: HttpResponse<any>) => {
+          concatMap(() => {
             this.isSubmitting = false;
             this.isSigningIn = true;
             const signInPayload = {...this.signUpForm.getRawValue(), password: this.signUpForm.getRawValue().confirmPassword};
@@ -104,12 +104,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
             delete signInPayload.role;
             return this.authService.signIn(signInPayload);
           }),
-          catchError((error: Error) => {
+          catchError((error: HttpErrorResponse) => {
             this.isSubmitting = false;
             this.isSigningIn = true;
             this.signUpForm.enable();
+
             if (error instanceof HttpErrorResponse) {
-              return throwError(new Error(`Invalid Input. Check then try again..`));
+              return throwError(new Error(`${error.statusText}. ${error.error.message}`));
             } else {
               return throwError(new Error(`Something Went Wrong. Please try again later..`));
             }
@@ -120,16 +121,23 @@ export class SignUpComponent implements OnInit, OnDestroy {
             this.isSubmitting = false;
             this.isSigningIn = false;
             this.authService.user = user;
-
+            this.router.navigateByUrl(`/`);
           },
-          (err) => {
+          (error) => {
             this.isSubmitting = false;
             this.isSigningIn = false;
             this.signUpForm.enable();
 
-            this._snackBar.open(err.message, undefined, {
-              panelClass: `warn`,
+            const snackBarRef = this._snackBar.open(error.message, `Retry`, {
+              panelClass: `alert-dialog`,
+            })
+            
+            
+            snackBarRef.onAction().subscribe(() => {
+             this.submitForm()
             });
+            
+            snackBarRef.dismiss();
           }
         )
     );
