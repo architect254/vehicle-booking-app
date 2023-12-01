@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Observable, map, shareReplay, startWith } from 'rxjs';
+import { Observable, last, map, shareReplay, startWith } from 'rxjs';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -22,7 +22,7 @@ import { PasswordResetDialogComponent } from './password-reset-dialog/password-r
 })
 export class HomeComponent implements OnInit {
   menu = menu;
-  user!: User;
+  user$!: Observable<User>;
 
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
@@ -45,9 +45,7 @@ export class HomeComponent implements OnInit {
       this.isMobile = isHandset;
     });
 
-    this.authService.user$.subscribe((user: User) => {
-      this.user = user;
-    });
+    this.user$ = this.authService.user$;
   }
 
   toggleMenu() {
@@ -62,13 +60,17 @@ export class HomeComponent implements OnInit {
 
   resetPassword() {
     const dialogRef = this.dialog.open(PasswordResetDialogComponent, {
-      data: this.user,
+      data: this.user$
     });
 
     dialogRef.afterClosed().subscribe((payload: {password:string, newPassword:string}) => {
       this.authService.resetPassword(payload).subscribe(()=>{
       });
     });
+  }
+
+  logOut(){
+    this.authService.signOut();
   }
 }
 
