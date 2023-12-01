@@ -16,12 +16,12 @@ import { STORAGE_KEYS } from '../misc/models/storage-keys.enum';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user!: User;
-  private currentTokenSubject: BehaviorSubject<any> = new BehaviorSubject(
-    localStorage.getItem(`accessToken`)
+  user: User | null = null;
+  private tokenSubject: BehaviorSubject<any> = new BehaviorSubject(
+    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
   );
-  public currentToken$: Observable<any> =
-    this.currentTokenSubject.asObservable();
+  public token$: Observable<any> =
+    this.tokenSubject.asObservable();
   private jwtHelper = new JwtHelperService();
 
   constructor(
@@ -30,45 +30,23 @@ export class AuthService {
     private _route: ActivatedRoute
   ) {}
 
-  public get currentTokenUserValue$(): Observable<any> {
-    return this.currentToken$.pipe(
+  public get user$(): Observable<any> {
+    return this.token$.pipe(
       map((token) => {
         if (token) {
           const payload: JwtPayload = jwt_decode(token);
-          return payload.user;
+          this.user = payload.user
+          return this.user;
         }
         return null;
       })
     );
   }
 
-  signUp(credentials: AuthDto) {
-    return this._http.post<unknown>(
-      `${environment.apiUrl}/auth/sign-up`,
-      credentials,
-      { observe: 'response' }
-    );
-  }
-
-  signIn({ phoneNo, password }: AuthDto) {
-    return this._http
-      .post<any>(`${environment.apiUrl}/auth/sign-in`, {
-        phoneNo,
-        password,
-      })
-      .pipe(
-        tap({
-          next: ({ token }) => {
-            this.currentTokenSubject.next(token);
-            localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token)
-          },
-        })
-      );
-  }
-
   public isAuthenticated(): Observable<boolean> {
-    return this.currentToken$.pipe(
+    return this.token$.pipe(
       map((token) => {
+        debugger
         const isAuthenticated = !this.jwtHelper.isTokenExpired(token);
 
         return isAuthenticated;
@@ -76,10 +54,33 @@ export class AuthService {
     );
   }
 
+  signUp(credentials: AuthDto) {
+    return this._http.post<void>(
+      `${environment.apiUrl}/auth/sign-up`,
+      credentials,
+    );
+  }
+
+  signIn({ phone_number, password }: AuthDto) {
+    return this._http
+      .post<any>(`${environment.apiUrl}/auth/sign-in`, {
+        phone_number,
+        password,
+      })
+      .pipe(
+        tap({
+          next: ({ token }) => {
+            this.tokenSubject.next(token);
+            localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token)
+          },
+        })
+      );
+  }
+
   signOut() {
     // remove user from local storage to log user out
-    localStorage.removeItem('accessToken');
-    this.currentTokenSubject.next(null);
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    this.tokenSubject.next(null);
     this._router.navigate(['../sign-in'], { relativeTo: this._route });
   }
 

@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
       this.isMobile = isHandset;
     });
 
-    this.authService.currentTokenUserValue$.subscribe((user: User) => {
+    this.authService.user$.subscribe((user: User) => {
       this.user = user;
     });
   }

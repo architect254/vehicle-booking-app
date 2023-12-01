@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/core/auth.service';
 })
 export class SignInComponent implements OnDestroy {
   signInForm: FormGroup = this.fb.group({
-    phoneNo: [``, Validators.required],
+    phone_number: [``, Validators.required],
     password: [``, Validators.required],
   });
   isSubmitting = false;
@@ -29,7 +29,7 @@ export class SignInComponent implements OnDestroy {
   ) {}
 
   get phoneNo() {
-    return this.signInForm.get(`phoneNo`);
+    return this.signInForm.get(`phone_number`);
   }
   get password() {
     return this.signInForm.get(`password`);
@@ -44,9 +44,7 @@ export class SignInComponent implements OnDestroy {
         .pipe(
           catchError((error: Error) => {
             if (error instanceof HttpErrorResponse) {
-              return throwError(
-                new Error(`Invalid Input. Check then try again..`)
-              );
+              return throwError(new Error(`${error.statusText}. ${error.error.message}`));
             } else {
               return throwError(
                 new Error(`Something Went Wrong. Please try again later..`)
@@ -57,14 +55,22 @@ export class SignInComponent implements OnDestroy {
         .subscribe(
           () => {
             this.isSubmitting = false;
-            this.router.navigate([`/`]);
+            this.router.navigateByUrl(`/`);
           },
-          ({ error }: HttpErrorResponse) => {
+          (error) => {
             this.isSubmitting = false;
             this.signInForm.enable();
-            this._snackBar.open(`${error.message}`, undefined, {
-              panelClass: `warn`,
+
+            const snackBarRef = this._snackBar.open(error.message, `Retry`, {
+              panelClass: `alert-dialog`,
+            })
+            
+            
+            snackBarRef.onAction().subscribe(() => {
+             this.submitForm()
             });
+            
+            snackBarRef.dismiss();
           }
         )
     );

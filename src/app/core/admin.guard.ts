@@ -10,9 +10,10 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, concatMap, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UserRole } from '../misc/models/user-role.enum';
+import { User } from '../misc/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -50,12 +51,17 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
     return this.checkLogin(route.toString());
   }
 
-  checkLogin(url: string): boolean | Observable<UrlTree> {
-    if (this.authService.isAuthenticated() && this.authService.user?.role == UserRole.ADMIN) {
-      return true;
+  checkLogin(url: string): Observable<boolean> | Observable<UrlTree> {
+    if (this.authService.isAuthenticated() ) {
+     return this.authService.user$.pipe(switchMap((user: User | null)=>{
+        if (user?.role.match(UserRole.ADMIN)) {
+          return of(true)
+        }
+        else  return of(false);
+     }))
     }
 
     // Navigate to the login page with extras
-    return of(this.router.createUrlTree(['/auth/sign-in']));
+    return of(this.router.createUrlTree(['/auth/sign-in']))
   }
 }
