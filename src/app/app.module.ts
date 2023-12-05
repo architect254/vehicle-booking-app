@@ -7,19 +7,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
+
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
+    SharedModule,
     MatProgressBarModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,15 +1,10 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Observable, last, map, shareReplay, startWith } from 'rxjs';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+
 } from '@angular/material/dialog';
 import { AuthService } from 'src/app/core/auth.service';
 import { User } from 'src/app/misc/models/user.model';
@@ -19,6 +14,9 @@ import { PasswordResetDialogComponent } from './password-reset-dialog/password-r
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [
+    { provide: 'WINDOW',  useValue: window }
+  ],
 })
 export class HomeComponent implements OnInit {
   menu = menu;
@@ -28,6 +26,7 @@ export class HomeComponent implements OnInit {
   sidenav!: MatSidenav;
 
   private breakpointObserver = inject(BreakpointObserver);
+
   panelOpenState = false;
   isMobile = false;
   isCollapsed = false;
@@ -39,7 +38,7 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private dialog: MatDialog, private authService: AuthService) {}
+  constructor(private dialog: MatDialog, private authService: AuthService, @Inject('WINDOW') private window: Window  ) {}
   ngOnInit(): void {
     this.isHandset$.subscribe((isHandset) => {
       this.isMobile = isHandset;
@@ -71,6 +70,7 @@ export class HomeComponent implements OnInit {
 
   logOut(){
     this.authService.signOut();
+    this.window.location.reload()
   }
 }
 

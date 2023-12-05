@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DataGridModule } from './data-grid/data-grid.module';
 
 
 
@@ -7,7 +8,9 @@ import { CommonModule } from '@angular/common';
   declarations: [],
   providers:[],
   imports: [
-    CommonModule
+    CommonModule,
+    DataGridModule
   ],
+  exports:[DataGridModule]
 })
 export class SharedModule { }

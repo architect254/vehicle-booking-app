@@ -76,5 +76,9 @@ span.nav-link-container {
   gap: 12px;
 }
 .primary-toolbar{
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+.breadcrumb{
+  align-items: center;
+  text-align: center;
 }

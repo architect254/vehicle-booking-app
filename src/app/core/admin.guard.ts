@@ -51,13 +51,13 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
     return this.checkLogin(route.toString());
   }
 
-  checkLogin(url: string): Observable<boolean> | Observable<UrlTree> {
+  checkLogin(url: string): Observable<boolean | UrlTree> {
     if (this.authService.isAuthenticated() ) {
      return this.authService.user$.pipe(switchMap((user: User | null)=>{
         if (user?.role.match(UserRole.ADMIN)) {
           return of(true)
         }
-        else  return of(false);
+        else  return of(this.router.createUrlTree(['/auth/sign-in']));
      }))
     }
 

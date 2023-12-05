@@ -6,7 +6,7 @@ import { JwtInterceptor } from './jwt.interceptor';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, HttpClientModule, SharedModule],
+  imports: [CommonModule, HttpClientModule],
   providers: [
     JwtHelperService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

@@ -10,11 +10,11 @@
   >
     <mat-nav-list *ngIf="(user$ | async) as user">
       <div class="profile-card">
+        <img src="../../../assets/icons/profile.svg" alt="profile" />
         <div class="header">
           <p class="mat-subtitle-1">{{user.firstname}} {{user.lastname}}</p>
           <small class="mat-body-1">{{user.phone_number}}</small>
         </div>
-        <img src="../../../assets/icons/profile.svg" alt="profile" />
       </div>
     </mat-nav-list>
     <mat-divider> </mat-divider>
@@ -72,6 +72,8 @@
         </mat-menu>
     </mat-toolbar>
     <!-- Add Content Here -->
-    <router-outlet></router-outlet>
+    <main  class="container-fluid">      
+      <router-outlet></router-outlet>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

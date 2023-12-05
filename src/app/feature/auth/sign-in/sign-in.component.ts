@@ -1,5 +1,5 @@
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,14 +13,14 @@ import { AuthService } from 'src/app/core/auth.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInComponent implements OnDestroy {
+export class SignInComponent implements OnInit, OnDestroy {
   signInForm: FormGroup = this.fb.group({
     phone_number: [``, Validators.required],
     password: [``, Validators.required],
   });
   isSubmitting = false;
 
-  $subscriptions: Subscription = new Subscription();
+  $subscriptions!: Subscription;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -33,6 +33,13 @@ export class SignInComponent implements OnDestroy {
   }
   get password() {
     return this.signInForm.get(`password`);
+  }
+  ngOnInit(){
+    this.$subscriptions = this.authService.isAuthenticated().subscribe(isAuthenticated =>{
+      if (isAuthenticated) {
+        this.router.navigateByUrl(`/`)
+      }
+    })
   }
 
   submitForm() {
