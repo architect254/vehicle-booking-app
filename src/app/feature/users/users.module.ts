@@ -5,6 +5,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { ListComponent } from './list/list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ViewUserComponent } from './view-user/view-user.component';
 
 
 
@@ -12,6 +13,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   declarations: [
     UsersComponent,
     ListComponent,
+    ViewUserComponent,
   ],
   imports: [
     CommonModule,

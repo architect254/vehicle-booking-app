@@ -10,9 +10,4 @@
   </mat-button-toggle-group>
 </section>
 
-<app-grid
-  [columns]="columns"
-  [isLoadingResults]="isLoading"
-  [data]="users"
-  (onFetchNext)="fetchNext($event)"
-></app-grid>
+<app-grid [columns]="columns" [data]="users" [isLoadingResults]="isLoading" (fetchNext)="fetchNext($event)"></app-grid>

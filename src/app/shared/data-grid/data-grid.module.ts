@@ -15,8 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     MatTableModule,
-    MatSortModule, MatPaginatorModule, DatePipe, MatProgressSpinnerModule
-   ],
+    MatSortModule, MatPaginatorModule, DatePipe, MatProgressSpinnerModule,
+    MatTableModule, MatSortModule, DatePipe   ],
   exports:[GridComponent]
 })
 export class DataGridModule { }

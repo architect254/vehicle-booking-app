@@ -11,7 +11,9 @@ import { UserRole } from 'src/app/misc/models/user-role.enum';
 })
 export class ListComponent implements OnInit {
   users: User[] = [];
-  columns = [{key:`firstname`, name: `First Name`, value: (row: any) => `${row.firstname}`,}]
+  columns = [{key:`firstname`, header: `First Name`, cell: (row: any) => `${row.firstname}`,},
+  {key:`lastname`, header: `Last Name`, cell: (row: any) => `${row.lastname}`,},{key:`role`, header: `Role`, cell: (row: any) => `${row.role}`,},{key:`phone_number`, header: `Phone Number`, cell: (row: any) => `${row.phone_number}`,}
+]
 
   isLoading: boolean = false;
   UserRole: typeof UserRole = UserRole;
@@ -22,7 +24,7 @@ export class ListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.fetchNext({page:0,pageSize:0});
+    this.fetchNext({page:1, pageSize: 10})
   }
 
   fetchNext(paginate: any){
