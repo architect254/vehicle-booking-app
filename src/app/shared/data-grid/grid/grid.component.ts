@@ -44,7 +44,7 @@ export class GridComponent implements OnChanges {
   }
 
   selectRecord(row:any){
-    window.open(this.router.createUrlTree([this.dataType,row.id]).toString())
+    window.open(this.router.createUrlTree([`users`,row.id]).toString(), "_blank", "resizable=no, toolbar=no, scrollbars=no, menubar=no, status=no, directories=no, location=no, width=1000, height=600, left=" + 100 + " top=100 " )
   }
  
 }
