@@ -1,0 +1,13 @@
+<section class="header d-flex m-2">
+  <h1>Users</h1>
+
+  <mat-button-toggle-group class="m-2" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="bold">All</mat-button-toggle>
+    <mat-button-toggle value="italic">{{UserRole.ADMIN}}</mat-button-toggle>
+    <mat-button-toggle value="underline">{{UserRole.COMPANY_MANAGER}}s</mat-button-toggle>
+    <mat-button-toggle value="underline">{{UserRole.VEHICLE_MANAGER}}s</mat-button-toggle>
+    <mat-button-toggle value="underline">{{UserRole.BOOKING_MANAGER}}s</mat-button-toggle>
+  </mat-button-toggle-group>
+</section>
+
+<app-grid [columns]="columns" [data]="users" [isLoadingResults]="isLoading" (fetchNext)="fetchNext($event)"></app-grid>

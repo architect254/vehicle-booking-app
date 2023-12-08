@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -26,8 +26,6 @@ export class AuthService {
 
   constructor(
     private _http: HttpClient,
-    private _router: Router,
-    private _route: ActivatedRoute
   ) {}
 
   public get user$(): Observable<any> {
@@ -46,7 +44,6 @@ export class AuthService {
   public isAuthenticated(): Observable<boolean> {
     return this.token$.pipe(
       map((token) => {
-        debugger
         const isAuthenticated = !this.jwtHelper.isTokenExpired(token);
 
         return isAuthenticated;
@@ -81,7 +78,6 @@ export class AuthService {
     // remove user from local storage to log user out
     localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
     this.tokenSubject.next(null);
-    this._router.navigate(['../sign-in'], { relativeTo: this._route });
   }
 
   resetPassword(payload:any){

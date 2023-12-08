@@ -1,15 +1,10 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Observable, map, shareReplay, startWith } from 'rxjs';
+import { Observable, last, map, shareReplay, startWith } from 'rxjs';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
+
 } from '@angular/material/dialog';
 import { AuthService } from 'src/app/core/auth.service';
 import { User } from 'src/app/misc/models/user.model';
@@ -19,15 +14,19 @@ import { PasswordResetDialogComponent } from './password-reset-dialog/password-r
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  providers: [
+    { provide: 'WINDOW',  useValue: window }
+  ],
 })
 export class HomeComponent implements OnInit {
   menu = menu;
-  user!: User;
+  user$!: Observable<User>;
 
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
 
   private breakpointObserver = inject(BreakpointObserver);
+
   panelOpenState = false;
   isMobile = false;
   isCollapsed = false;
@@ -39,15 +38,13 @@ export class HomeComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private dialog: MatDialog, private authService: AuthService) {}
+  constructor(private dialog: MatDialog, private authService: AuthService, @Inject('WINDOW') private window: Window  ) {}
   ngOnInit(): void {
     this.isHandset$.subscribe((isHandset) => {
       this.isMobile = isHandset;
     });
 
-    this.authService.user$.subscribe((user: User) => {
-      this.user = user;
-    });
+    this.user$ = this.authService.user$;
   }
 
   toggleMenu() {
@@ -62,13 +59,18 @@ export class HomeComponent implements OnInit {
 
   resetPassword() {
     const dialogRef = this.dialog.open(PasswordResetDialogComponent, {
-      data: this.user,
+      data: this.user$
     });
 
     dialogRef.afterClosed().subscribe((payload: {password:string, newPassword:string}) => {
       this.authService.resetPassword(payload).subscribe(()=>{
       });
     });
+  }
+
+  logOut(){
+    this.authService.signOut();
+    this.window.location.reload()
   }
 }
 

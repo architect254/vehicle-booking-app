@@ -8,13 +8,13 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-nav-list>
+    <mat-nav-list *ngIf="(user$ | async) as user">
       <div class="profile-card">
-        <div class="header">
-          <p class="mat-subtitle-1">Jared Bada</p>
-          <small class="mat-body-1">jbada@gmail.com</small>
-        </div>
         <img src="../../../assets/icons/profile.svg" alt="profile" />
+        <div class="header">
+          <p class="mat-subtitle-1">{{user.firstname}} {{user.lastname}}</p>
+          <small class="mat-body-1">{{user.phone_number}}</small>
+        </div>
       </div>
     </mat-nav-list>
     <mat-divider> </mat-divider>
@@ -35,7 +35,8 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary" class="primary-toolbar">
-      <button
+      <div>
+        <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
@@ -46,13 +47,14 @@
       </button>
      
         <span>Vehicle Booking Application</span>
-        <span class="toolbar-spacer"></span>
+      </div>
         <button
           mat-icon-button
           [matMenuTriggerFor]="userProfileUtilsMenu"
           aria-label="User Profile Menu" class="profile-utils-menu"
         >
-          <img src="../../../assets/icons/profile.svg" alt="profile" class="utils-profile-pic"/>
+        <mat-icon aria-label="User menu toggle icon">more_vert</mat-icon>
+
         </button>
         <mat-menu #userProfileUtilsMenu="matMenu">
           <button mat-menu-item (click)="resetPassword()">
@@ -63,13 +65,15 @@
             <mat-icon>manage_accounts</mat-icon>
             <span>My Profile Settings</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="logOut()">
             <mat-icon>logout</mat-icon>
             <span>Log Out</span>
           </button>
         </mat-menu>
     </mat-toolbar>
     <!-- Add Content Here -->
-    <router-outlet></router-outlet>
+    <main  class="container-fluid">      
+      <router-outlet></router-outlet>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
