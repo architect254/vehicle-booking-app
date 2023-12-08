@@ -9,6 +9,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {DatePipe} from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { UserRole } from 'src/app/misc/models/user-role.enum';
+import { Router } from '@angular/router';
 
 /**
  * @title Table retrieving data through HTTP
@@ -21,6 +22,7 @@ import { UserRole } from 'src/app/misc/models/user-role.enum';
 export class GridComponent implements OnChanges {
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
+  @Input() dataType: string = ``;
   @Input() isLoadingResults = true;
 
   @Output() fetchNext = new EventEmitter<any>();
@@ -34,11 +36,15 @@ export class GridComponent implements OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient, private router:Router) {}
 
   ngOnChanges(){
     this.displayedColumns = this.columns.map(column => column.key);
     this.resultsLength = this.data.length;
+  }
+
+  selectRecord(row:any){
+    window.open(this.router.createUrlTree([this.dataType,row.id]).toString())
   }
  
 }

@@ -16,9 +16,9 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRecord(row)"></tr>
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of GitHub search results"></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of GitHub search results"></mat-paginator>
 </div>

@@ -11,8 +11,7 @@ import { UserRole } from 'src/app/misc/models/user-role.enum';
 })
 export class ListComponent implements OnInit {
   users: User[] = [];
-  columns = [{key:`firstname`, header: `First Name`, cell: (row: any) => `${row.firstname}`,},
-  {key:`lastname`, header: `Last Name`, cell: (row: any) => `${row.lastname}`,},{key:`role`, header: `Role`, cell: (row: any) => `${row.role}`,},{key:`phone_number`, header: `Phone Number`, cell: (row: any) => `${row.phone_number}`,}
+  columns = [{key:`name`, header: `Name`, cell: (row: any) => `${row.firstname} ${row.lastname}`},{key:`role`, header: `Role`, cell: (row: any) => `${row.role}`,},{key:`phone_number`, header: `Phone Number`, cell: (row: any) => `${row.phone_number}`,}
 ]
 
   isLoading: boolean = false;

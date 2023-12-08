@@ -41,4 +41,6 @@
   .mat-column-created {
     max-width: 124px;
   }
-  
+  .mat-mdc-row:hover .mat-mdc-cell {
+    background-color: gainsboro;
+  }
